@@ -331,6 +331,23 @@
       font-family: 'Lato', sans-serif;
     }
     
+    .onboarding-hero-logo {
+      height: 44px;
+      margin: 0 auto 16px auto;
+      display: block;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.12));
+    }
+    
+    .topbar-logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .topbar-logo-img {
+      height: 28px;
+      object-fit: contain;
+    }
+    
     /* Top Bar */
     .canvas-topbar {
       display: flex;
@@ -3829,12 +3846,8 @@
       
       <!-- Top Bar -->
       <div class="canvas-topbar">
-        <div class="breadcrumb" aria-label="Breadcrumb">
-          <span>Home</span>
-          <span class="sep">›</span>
-          <span>Trips</span>
-          <span class="sep">›</span>
-          <span class="active">Trip 1</span>
+        <div class="topbar-logo-container" aria-label="MakeMyTrip">
+          <img class="topbar-logo-img" src="logo.png" alt="MakeMyTrip Logo">
         </div>
         
         <div class="canvas-topbar-actions" style="display: flex; align-items: center; gap: 12px;">
@@ -3858,6 +3871,7 @@
 
       <!-- Onboarding Hero Header -->
       <div class="onboarding-hero-container" id="onboarding-hero-container">
+        <img class="onboarding-hero-logo" src="myra_logo.png" alt="Myra Beta Logo">
         <h1 class="onboarding-hero-title">Your AI Assistant for Flights & Stays</h1>
         <p class="onboarding-hero-subtitle">Converse with Myra to book flights and stays effortlessly</p>
       </div>
