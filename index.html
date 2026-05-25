@@ -6393,6 +6393,90 @@
           console.error("Click handler error:", err);
         }
       });
+      
+      // ──────── IFRAME ROUTING FOR DIFFERENT SCREENS ────────
+      const urlParams = new URLSearchParams(window.location.search);
+      const hash = window.location.hash;
+      const screenParam = urlParams.get('screen') || urlParams.get('s');
+      
+      let targetScreen = null;
+      if (screenParam) {
+        targetScreen = parseInt(screenParam);
+      } else if (hash) {
+        const hashMatch = hash.match(/screen(\d)/);
+        if (hashMatch) {
+          targetScreen = parseInt(hashMatch[1]);
+        }
+      }
+      
+      if (targetScreen && targetScreen !== 1) {
+        // Instantly bypass onboarding for screens 2, 4, 5, 6
+        const discChat = document.getElementById('discovery-chat-container');
+        if (discChat) discChat.style.display = 'none';
+        
+        const watermark = document.getElementById('canvas-watermark');
+        if (watermark) watermark.style.display = 'none';
+        
+        const hero = document.getElementById('onboarding-hero-container');
+        if (hero) hero.style.display = 'none';
+        
+        const centerCanvas = document.getElementById('center-canvas-body');
+        if (centerCanvas) centerCanvas.classList.remove('onboarding-active');
+        
+        // Execute the onboarding complete layout reveal immediately
+        completeOnboardingBuild();
+        
+        setTimeout(() => {
+          if (targetScreen === 2) {
+            // Screen 2: Full Canvas Spine View (Already visible now!)
+          } else if (targetScreen === 4) {
+            // Screen 4: Before/After Swap Panel
+            currentState.isAlternativeMode = true;
+            currentState.isAlternativeLoading = false;
+            currentState.isQuickViewActive = false;
+            currentState.alternativeType = 'hotel';
+            currentState.alternativeHeader = "Alternatives for Taj Fort Aguada Resort";
+            currentState.alternativeFilterTag = null;
+            renderRightPanel();
+          } else if (targetScreen === 5) {
+            // Screen 5: Inline Slot Suggestion
+            const activityPanel = document.getElementById('activity-suggestions-panel');
+            if (activityPanel) {
+              activityPanel.style.display = 'flex';
+              gsap.fromTo('#activity-suggestions-panel', { opacity: 0, y: 24, z: 20 }, { opacity: 1, y: 0, z: 20, duration: 0.35, ease: 'power2.out' });
+              
+              window.showActivityContextChip(2, "Afternoon (3–6 PM)");
+              
+              const aspStream = document.getElementById('asp-stream');
+              if (aspStream) {
+                aspStream.innerHTML = '';
+                
+                const aiBubble = document.createElement('div');
+                aiBubble.className = "discovery-bubble ai-bubble";
+                aiBubble.innerHTML = `
+                  <span class="ai-bubble-spark">✦</span>
+                  <div class="bubble-content">Found some great options for Day 2 Afternoon (3–6 PM). Pick one to add to your itinerary:</div>
+                `;
+                aspStream.appendChild(aiBubble);
+                
+                const cardsHTML = window.getActivitySuggestionsHTML(2, "Afternoon (3–6 PM)");
+                const cardsWrapper = document.createElement('div');
+                cardsWrapper.style.marginTop = '8px';
+                cardsWrapper.style.width = '100%';
+                cardsWrapper.innerHTML = cardsHTML;
+                aspStream.appendChild(cardsWrapper);
+                
+                aspStream.scrollTop = aspStream.scrollHeight;
+              }
+            }
+          } else if (targetScreen === 6) {
+            // Screen 6: Booking Checkout Sheet
+            if (typeof window.openBookingFlow === 'function') {
+              window.openBookingFlow();
+            }
+          }
+        }, 150);
+      }
     });
 
     // GLOBAL RENDER DAY FUNCTION
