@@ -3182,11 +3182,11 @@
       border-radius: 16px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
       overflow: hidden;
-      cursor: pointer;
+      cursor: grab;
       z-index: 15;
       display: flex;
       flex-direction: column;
-      transform: translateX(-50%);
+      margin-left: -105px; /* Replaces transform: translateX(-50%) to avoid conflict with GSAP Draggable */
       transition: opacity 0.25s ease, border-color 0.2s ease;
     }
 
@@ -3401,6 +3401,68 @@
       pointer-events: none;
       opacity: 1;
       transition: opacity 0.5s ease;
+    }
+
+    /* Drag-to-Reorder Affordance, time ghost, and pulse styles */
+    .card-node.grabbing {
+      cursor: grabbing !important;
+    }
+    
+    .card-drag-handle {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 7px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+    
+    .card-node:hover .card-drag-handle {
+      opacity: 0.5;
+    }
+    
+    .card-drag-line {
+      width: 100%;
+      height: 2px;
+      background-color: #999;
+      border-radius: 1px;
+    }
+    
+    .timeline-time-ghost {
+      position: absolute;
+      top: 55%;
+      left: 0;
+      transform: translate(-50%, -50%);
+      background: #284dff;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 20px;
+      padding: 4px 10px;
+      z-index: 1200;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      display: none;
+    }
+    
+    @keyframes borderPulse {
+      0% { border-color: transparent; box-shadow: 0 0 0px rgba(255, 179, 0, 0); }
+      50% { border-color: #FFB300; box-shadow: 0 0 15px rgba(255, 179, 0, 0.6); }
+      100% { border-color: transparent; box-shadow: 0 0 0px rgba(255, 179, 0, 0); }
+    }
+    
+    .card-node.overlap-pulse {
+      border: 2px solid #FFB300 !important;
+      animation: borderPulse 0.8s ease-in-out 2;
     }
 
     /* CHANGE 1 — SIGN IN CTA STYLES */
@@ -4034,6 +4096,7 @@
           <div class="timeline-connector-dot confirmed" data-day="1" style="left: 120px;"></div>
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 120px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d1-c0" data-id="d1-c0" data-type="flight" style="left: 120px; bottom: calc(45% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c0')">
                 <img class="card-node-img" src="images/indigo_flight.jpg" alt="IndiGo Flight BLR→GOA">
@@ -4054,6 +4117,7 @@
           <div class="timeline-connector-dot confirmed" data-day="1" style="left: 480px;"></div>
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 480px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d1-c1" data-id="d1-c1" data-type="hotel" style="left: 480px; bottom: calc(45% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c1')">
                 <img class="card-node-img" src="images/taj_fort.jpg" alt="Taj Fort Aguada Resort">
@@ -4073,6 +4137,7 @@
           <div class="timeline-connector-dot confirmed" data-day="1" style="left: 660px;"></div>
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 660px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d1-c2" data-id="d1-c2" data-type="activity" style="left: 660px; top: calc(55% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c2')">
                 <img class="card-node-img" src="images/baga_sunset.jpg" alt="Baga Beach Sunset Walk">
@@ -4092,6 +4157,7 @@
           <div class="timeline-connector-dot" data-day="2" style="left: 1020px;"></div>
           <div class="timeline-connector-line" data-day="2" style="left: 1020px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d2-c1" data-id="d2-c1" data-type="hotel" style="left: 1020px; bottom: calc(45% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-c1')">
                 <img class="card-node-img" src="images/palolem_shack.jpg" alt="Palolem Beach Shack Stay">
@@ -4111,6 +4177,7 @@
           <div class="timeline-connector-dot" data-day="2" style="left: 1120px;"></div>
           <div class="timeline-connector-line" data-day="2" style="left: 1120px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d2-food" data-id="d2-food" data-type="restaurant" style="left: 1120px; top: calc(55% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-food')">
                 <img class="card-node-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Fisherman's Wharf, Cavelossim">
@@ -4131,6 +4198,7 @@
           <div class="timeline-connector-dot" data-day="2" style="left: 1200px;"></div>
           <div class="timeline-connector-line" data-day="2" style="left: 1200px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d2-c2" data-id="d2-c2" data-type="activity" style="left: 1200px; top: calc(55% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-c2')">
                 <img class="card-node-img" src="images/dudhsagar_trek.jpg" alt="Dudhsagar Waterfalls Trek">
@@ -4150,6 +4218,7 @@
           <div class="timeline-connector-dot" data-day="3" style="left: 1620px;"></div>
           <div class="timeline-connector-line" data-day="3" style="left: 1620px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d3-c1" data-id="d3-c1" data-type="hotel" style="left: 1620px; bottom: calc(45% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d3-c1')">
                 <img class="card-node-img" src="images/curlies_club.jpg" alt="Curlies Beach Club">
@@ -4169,6 +4238,7 @@
           <div class="timeline-connector-dot" data-day="3" style="left: 1800px;"></div>
           <div class="timeline-connector-line" data-day="3" style="left: 1800px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d3-c2" data-id="d3-c2" data-type="activity" style="left: 1800px; top: calc(55% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d3-c2')">
                 <img class="card-node-img" src="images/anjuna_market.jpg" alt="Anjuna Flea Market">
@@ -4188,6 +4258,7 @@
           <div class="timeline-connector-dot confirmed" data-day="4" style="left: 2280px;"></div>
           <div class="timeline-connector-line confirmed" data-day="4" style="left: 2280px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d4-c1" data-id="d4-c1" data-type="hotel" style="left: 2280px; bottom: calc(45% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d4-c1')">
                 <img class="card-node-img" src="images/infantaria_bakery.jpg" alt="Infantaria Bakery">
@@ -4207,6 +4278,7 @@
           <div class="timeline-connector-dot confirmed" data-day="4" style="left: 2400px;"></div>
           <div class="timeline-connector-line confirmed" data-day="4" style="left: 2400px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d4-c2" data-id="d4-c2" data-type="flight" style="left: 2400px; top: calc(55% + 40px);" role="article">
+            <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d4-c2')">
                 <img class="card-node-img" src="images/indigo_flight.jpg" alt="IndiGo Return Flight">
@@ -5924,6 +5996,260 @@
       window.renderDayMarker(dayNum, true, true);
     };
 
+    // ==========================================================================
+    // DRAG-TO-REORDER FOR CANVAS CARD NODES
+    // ==========================================================================
+    
+    // Time Logic: x=0 is 6:00 AM, each 120px = 1 hour (2px = 1 minute)
+    window.formatTimeFromX = function(x) {
+      const hoursFromStart = x / 120;
+      const startHour = 6;
+      const totalHours = startHour + hoursFromStart;
+      
+      let hour = Math.floor(totalHours);
+      const minutes = Math.round((totalHours - hour) * 60);
+      
+      if (minutes === 60) {
+        hour += 1;
+      }
+      
+      const displayMinutes = minutes % 60;
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      let displayHour = hour % 12;
+      if (displayHour === 0) displayHour = 12;
+      
+      const paddedMinutes = displayMinutes.toString().padStart(2, '0');
+      return `${displayHour}:${paddedMinutes} ${ampm}`;
+    };
+
+    window.getSpineLabelTextForCard = function(cardType, startX) {
+      const startTime = window.formatTimeFromX(startX);
+      if (cardType === 'flight') {
+        return `${startTime} → ${window.formatTimeFromX(startX + 180)}`;
+      } else if (cardType === 'hotel' || cardType === 'stay') {
+        return `Check-in ${startTime}`;
+      } else if (cardType === 'restaurant') {
+        return `${startTime} – ${window.formatTimeFromX(startX + 240)}`;
+      } else {
+        return `${startTime} – ${window.formatTimeFromX(startX + 240)}`;
+      }
+    };
+
+    // Time Ghost Indicator
+    window.showTimeGhost = function(target) {
+      let ghost = document.getElementById('timeline-time-ghost');
+      if (!ghost) {
+        ghost = document.createElement('div');
+        ghost.id = 'timeline-time-ghost';
+        ghost.className = 'timeline-time-ghost';
+        const timeline = document.getElementById('innerTimeline');
+        if (timeline) timeline.appendChild(ghost);
+      }
+      
+      const baseLeft = parseFloat(target.style.left) || 0;
+      const currentX = baseLeft + (gsap.getProperty(target, "x") || 0);
+      
+      ghost.style.display = 'block';
+      ghost.textContent = window.formatTimeFromX(currentX);
+      gsap.set(ghost, { x: currentX });
+      
+      gsap.to(ghost, {
+        opacity: 1,
+        duration: 0.15,
+        overwrite: "auto"
+      });
+    };
+
+    window.updateTimeGhost = function(target, xOffset) {
+      const ghost = document.getElementById('timeline-time-ghost');
+      if (!ghost) return;
+      
+      const baseLeft = parseFloat(target.style.left) || 0;
+      const currentX = baseLeft + xOffset;
+      
+      ghost.textContent = window.formatTimeFromX(currentX);
+      gsap.set(ghost, { x: currentX });
+    };
+
+    window.hideTimeGhost = function() {
+      const ghost = document.getElementById('timeline-time-ghost');
+      if (!ghost) return;
+      
+      gsap.to(ghost, {
+        opacity: 0,
+        duration: 0.15,
+        overwrite: "auto",
+        onComplete: function() {
+          ghost.style.display = 'none';
+        }
+      });
+    };
+
+    // Initialize Card Draggables
+    window.initCardDraggables = function() {
+      if (!window.Draggable) return;
+      
+      const cards = document.querySelectorAll('.card-node');
+      cards.forEach(card => {
+        // Prevent duplicate setups
+        if (card._draggable) {
+          card._draggable.kill();
+        }
+        
+        // Stop pointer events from bubbling up to innerTimeline panning
+        const stopProp = (e) => {
+          e.stopPropagation();
+        };
+        card.removeEventListener('mousedown', stopProp);
+        card.removeEventListener('touchstart', stopProp);
+        card.removeEventListener('pointerdown', stopProp);
+        
+        card.addEventListener('mousedown', stopProp);
+        card.addEventListener('touchstart', stopProp, { passive: true });
+        card.addEventListener('pointerdown', stopProp);
+        
+        const cardId = card.getAttribute('data-id') || card.id.replace('card-node-', '');
+        const cardType = card.getAttribute('data-type') || 'activity';
+        const baseLeft = parseFloat(card.style.left) || 0;
+        
+        const dragInstances = Draggable.create(card, {
+          type: "x",
+          onDragStart: function() {
+            // Record original translated x position before this drag session starts
+            this.target._previousX = gsap.getProperty(this.target, "x") || 0;
+            
+            // Add grabbing class for custom cursor grabbing styling
+            this.target.classList.add('grabbing');
+            
+            // Lift card
+            gsap.to(this.target, {
+              scale: 1.05,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
+              zIndex: 100,
+              duration: 0.2
+            });
+            
+            // Show time ghost
+            window.showTimeGhost(this.target);
+          },
+          onDrag: function() {
+            window.updateTimeGhost(this.target, this.x);
+          },
+          onDragEnd: function() {
+            this.target.classList.remove('grabbing');
+            window.hideTimeGhost();
+            
+            // Settle card visual styling
+            gsap.to(this.target, {
+              scale: 1,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
+              zIndex: 15,
+              duration: 0.2
+            });
+            
+            // Math for snapping to nearest 30-minute interval (60px step)
+            const currentAbsoluteX = baseLeft + this.x;
+            const snappedAbsoluteX = Math.round(currentAbsoluteX / 60) * 60;
+            const snappedX = snappedAbsoluteX - baseLeft;
+            
+            // Retrieve associated dot, line, and label
+            let dot = null;
+            let line = null;
+            
+            const innerTimeline = document.getElementById('innerTimeline');
+            const dots = innerTimeline.querySelectorAll('.timeline-connector-dot');
+            dots.forEach(d => {
+              if (Math.abs(parseFloat(d.style.left) - baseLeft) < 2) {
+                dot = d;
+              }
+            });
+            
+            const lines = innerTimeline.querySelectorAll('.timeline-connector-line');
+            lines.forEach(l => {
+              if (Math.abs(parseFloat(l.style.left) - baseLeft) < 2) {
+                line = l;
+              }
+            });
+            
+            const label = document.getElementById('time-label-' + cardId);
+            
+            // Basic conflict detection (horizontal overlap same side within 180px)
+            let conflictCard = null;
+            const otherCards = document.querySelectorAll('.card-node');
+            const targetIsAbove = this.target.classList.contains('above');
+            
+            for (let other of otherCards) {
+              if (other === this.target || other.style.display === 'none') continue;
+              
+              const otherBaseLeft = parseFloat(other.style.left) || 0;
+              const otherX = gsap.getProperty(other, "x") || 0;
+              const otherAbsX = otherBaseLeft + otherX;
+              const otherIsAbove = other.classList.contains('above');
+              
+              if (targetIsAbove === otherIsAbove) {
+                if (Math.abs(snappedAbsoluteX - otherAbsX) < 180) {
+                  conflictCard = other;
+                  break;
+                }
+              }
+            }
+            
+            if (conflictCard) {
+              // Pulse border colors for both conflicting cards
+              this.target.classList.add('overlap-pulse');
+              conflictCard.classList.add('overlap-pulse');
+              
+              setTimeout(() => {
+                this.target.classList.remove('overlap-pulse');
+                conflictCard.classList.remove('overlap-pulse');
+              }, 1600);
+              
+              // Bottom Toast alert
+              const toastTextEl = document.getElementById('bottom-toast-text');
+              const toastEl = document.getElementById('bottom-center-toast-msg');
+              if (toastTextEl && toastEl) {
+                toastTextEl.textContent = "⚠️ Cards overlap — try a different time";
+                toastEl.classList.add('show');
+                setTimeout(() => {
+                  toastEl.classList.remove('show');
+                }, 2000);
+              }
+              
+              // Bounce back to previous translate coordinates
+              const prevX = this.target._previousX || 0;
+              gsap.to(this.target, { x: prevX, duration: 0.4, ease: "back.out(1.2)" });
+              if (dot) gsap.to(dot, { x: prevX, duration: 0.4, ease: "back.out(1.2)" });
+              if (line) gsap.to(line, { x: prevX, duration: 0.4, ease: "back.out(1.2)" });
+              if (label) {
+                gsap.to(label, { x: prevX, duration: 0.4, ease: "back.out(1.2)" });
+                label.textContent = window.getSpineLabelTextForCard(cardType, baseLeft + prevX);
+              }
+            } else {
+              // Snap all connected elements smoothly
+              gsap.to(this.target, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
+              if (dot) gsap.to(dot, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
+              if (line) gsap.to(line, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
+              
+              if (label) {
+                gsap.to(label, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
+                label.textContent = window.getSpineLabelTextForCard(cardType, snappedAbsoluteX);
+              }
+              
+              // Dynamic Day Marker planned time update for Fisherman's Wharf
+              if (cardId === 'd2-food') {
+                const dayTime2 = document.getElementById('day-time-2');
+                if (dayTime2) {
+                  dayTime2.textContent = "Dinner: " + window.formatTimeFromX(snappedAbsoluteX);
+                }
+              }
+            }
+          }
+        });
+        
+        card._draggable = dragInstances[0];
+      });
+    };
+
     window.initDraggable = function() {
       const container = document.getElementById('canvasOuter');
       const innerTimeline = document.getElementById('innerTimeline');
@@ -5958,6 +6284,11 @@
         })[0];
         
         gsap.set("#innerTimeline", { x: 0 });
+        
+        // Initialize card draggables on timelines
+        if (typeof window.initCardDraggables === 'function') {
+          window.initCardDraggables();
+        }
       }
     };
 
@@ -8487,6 +8818,7 @@
       }
       
       card.innerHTML = `
+        <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
         <div style="position:relative;">
           <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('${cardId}')">
             <img class="card-node-img" src="${photo}" alt="${name}">
@@ -8512,7 +8844,18 @@
         gsap.fromTo(line, { scaleY: 0 }, { scaleY: 1, duration: 0.4, transformOrigin: isAbove ? "bottom" : "top" });
         gsap.fromTo(card,
           { opacity: 0, scale: 0.8, y: isAbove ? -30 : 30 },
-          { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "back.out(1.4)" }
+          { 
+            opacity: 1, 
+            scale: 1, 
+            y: 0, 
+            duration: 0.5, 
+            ease: "back.out(1.4)",
+            onComplete: () => {
+              if (typeof window.initCardDraggables === 'function') {
+                window.initCardDraggables();
+              }
+            }
+          }
         );
         
         setTimeout(() => {
@@ -9194,6 +9537,10 @@
       
       const label = document.getElementById('time-label-' + cardId);
       if (label) gsap.fromTo(label, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3 });
+      
+      if (typeof window.initCardDraggables === 'function') {
+        window.initCardDraggables();
+      }
     };
 
     window.showRemoveToast = function(cardName, cardId) {
