@@ -3162,8 +3162,8 @@
     .card-type-badge {
       position: absolute;
       top: 8px;
-      right: 8px;
-      background: rgba(236,32,39,0.85);
+      left: 8px;
+      background: #284dff;
       color: #FFFFFF;
       font-size: 9px;
       font-weight: 700;
@@ -3197,6 +3197,40 @@
       pointer-events: none;
     }
 
+    .card-node-img-wrapper {
+      position: relative;
+      cursor: zoom-in;
+      overflow: hidden;
+      width: 100%;
+      height: 110px;
+    }
+    .card-node-img-wrapper .card-node-img {
+      transition: transform 0.3s ease;
+    }
+    .card-node-img-wrapper:hover .card-node-img {
+      transform: scale(1.05);
+    }
+    .card-expand-overlay {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 5;
+    }
+    .card-node-img-wrapper:hover .card-expand-overlay {
+      opacity: 1;
+    }
+
     .card-node-body {
       padding: 12px;
       display: flex;
@@ -3225,13 +3259,17 @@
     }
 
     .price-pill {
-      background-color: #EC2027;
+      background-color: #284dff;
       color: #FFFFFF;
       font-size: 10px;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 12px;
       white-space: nowrap;
+    }
+    .price-pill.free-pill {
+      background-color: #E8F5E9 !important;
+      color: #2E7D32 !important;
     }
 
     .meta-chip {
@@ -3709,9 +3747,16 @@
                   <span style="font-size: 11px;"><span style="margin-right: 6px;">🏨</span><span style="color: #999999;">Stays</span></span>
                   <span style="font-size: 11px; color: #CCCCCC; font-weight: 600;" id="left-breakdown-stays">—</span>
                 </div>
-                <div class="breakdown-row" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                <div class="breakdown-row" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #F0F0F0;">
                   <span style="font-size: 11px;"><span style="margin-right: 6px;">🎯</span><span style="color: #999999;">Activities</span></span>
                   <span style="font-size: 11px; color: #CCCCCC; font-weight: 600;" id="left-breakdown-activities">—</span>
+                </div>
+                <div class="breakdown-row" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0;">
+                  <span style="font-size: 11px;"><span style="margin-right: 6px;">🍽</span><span style="color: #999999;">Food (est.)</span></span>
+                  <span style="font-size: 11px; color: #CCCCCC; font-weight: 600;" id="left-breakdown-food">—</span>
+                </div>
+                <div style="font-size: 10px; color: #999999; font-style: italic; margin-top: 4px; text-align: left;" id="left-food-note">
+                  ~₹800/day estimate based on 1 meal out + local eats
                 </div>
               </div>
             </div>
@@ -3929,7 +3974,7 @@
             <div class="day-circle unconfirmed" id="day-circle-2">Day 2</div>
             <div class="day-label-box">
               <span class="day-label-date" id="day-date-2">May 31</span>
-              <span class="day-label-time" id="day-time-2">Not planned</span>
+              <span class="day-label-time" id="day-time-2">Dinner: 8:00 PM</span>
             </div>
             <!-- Weather Card -->
             <div class="timeline-weather-card" style="margin-top: 8px; width: 80px; background-color: #FFFFFF; border-radius: 10px; border: 1px solid #E8E8E8; padding: 6px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); pointer-events: none;">
@@ -3978,18 +4023,22 @@
           <div class="timeline-time-label below-spine" id="time-label-d1-c1" style="left: 480px;">Check-in 2:00 PM</div>
           <div class="timeline-time-label above-spine" id="time-label-d1-c2" style="left: 660px;">5:00 PM – 7:00 PM</div>
           <div class="timeline-time-label below-spine" id="time-label-d2-c1" style="left: 1020px;">Check-in 1:00 PM</div>
+          <div class="timeline-time-label below-spine" id="time-label-d2-food" style="left: 1120px;">8:00 PM – 10:00 PM</div>
           <div class="timeline-time-label above-spine" id="time-label-d2-c2" style="left: 1200px;">10:00 AM – 2:00 PM</div>
           <div class="timeline-time-label below-spine" id="time-label-d3-c1" style="left: 1620px;">9:00 PM – 2:00 AM</div>
           <div class="timeline-time-label above-spine" id="time-label-d3-c2" style="left: 1800px;">10:00 AM – 1:00 PM</div>
           <div class="timeline-time-label below-spine" id="time-label-d4-c1" style="left: 2280px;">9:00 AM – 10:30 AM</div>
-          <div class="timeline-time-label above-spine" id="time-label-d4-c2" style="left: 2400px;">2:30 PM → 4:00 PM</div>
+          <div class="timeline-time-label above-spine" id="time-label-d4-c2" style="left: 2400px;">2:30 PM → 4:00 PM</div>Logical
 
           <!-- ABOVE CARD 0: x=120px - IndiGo Arrival Flight (Blr → Goa) -->
           <div class="timeline-connector-dot confirmed" data-day="1" style="left: 120px;"></div>
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 120px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d1-c0" data-id="d1-c0" data-type="flight" style="left: 120px; bottom: calc(45% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/indigo_flight.jpg" alt="IndiGo Flight BLR→GOA">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c0')">
+                <img class="card-node-img" src="images/indigo_flight.jpg" alt="IndiGo Flight BLR→GOA">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
               <span class="card-type-badge">✈ Flight</span>
             </div>
             <div class="card-node-body">
@@ -4006,7 +4055,10 @@
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 480px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d1-c1" data-id="d1-c1" data-type="hotel" style="left: 480px; bottom: calc(45% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/taj_fort.jpg" alt="Taj Fort Aguada Resort">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c1')">
+                <img class="card-node-img" src="images/taj_fort.jpg" alt="Taj Fort Aguada Resort">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
             </div>
             <div class="card-node-body">
               <h3 class="card-node-name">Taj Fort Aguada Resort</h3>
@@ -4022,12 +4074,15 @@
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 660px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d1-c2" data-id="d1-c2" data-type="activity" style="left: 660px; top: calc(55% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/baga_sunset.jpg" alt="Baga Beach Sunset Walk">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c2')">
+                <img class="card-node-img" src="images/baga_sunset.jpg" alt="Baga Beach Sunset Walk">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
             </div>
             <div class="card-node-body">
               <h3 class="card-node-name">Baga Beach Sunset Walk</h3>
               <div class="card-node-meta">
-                <span class="price-pill">Free</span>
+                <span class="price-pill free-pill">Free</span>
                 <span class="meta-chip">⭐4.6 · Beach Walk</span>
               </div>
             </div>
@@ -4038,7 +4093,10 @@
           <div class="timeline-connector-line" data-day="2" style="left: 1020px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d2-c1" data-id="d2-c1" data-type="hotel" style="left: 1020px; bottom: calc(45% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/palolem_shack.jpg" alt="Palolem Beach Shack Stay">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-c1')">
+                <img class="card-node-img" src="images/palolem_shack.jpg" alt="Palolem Beach Shack Stay">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
             </div>
             <div class="card-node-body">
               <h3 class="card-node-name">Palolem Beach Shack</h3>
@@ -4049,12 +4107,35 @@
             </div>
           </article>
 
+          <!-- BELOW FOOD CARD: x=1120px - Fisherman's Wharf, Cavelossim -->
+          <div class="timeline-connector-dot" data-day="2" style="left: 1120px;"></div>
+          <div class="timeline-connector-line" data-day="2" style="left: 1120px; top: 55%; height: 40px;"></div>
+          <article class="card-node below" id="card-node-d2-food" data-id="d2-food" data-type="restaurant" style="left: 1120px; top: calc(55% + 40px);" role="article">
+            <div style="position:relative;">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-food')">
+                <img class="card-node-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Fisherman's Wharf, Cavelossim">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
+              <span class="card-type-badge" style="background-color: #FF6B35; color: white; font-size: 10px;">🍽 Restaurant</span>
+            </div>
+            <div class="card-node-body">
+              <h3 class="card-node-name">Fisherman's Wharf, Cavelossim</h3>
+              <div class="card-node-meta">
+                <span class="price-pill">~₹800/person</span>
+                <span class="meta-chip">⭐4.6 · Seafood · Local Favourite</span>
+              </div>
+            </div>
+          </article>
+
           <!-- BELOW CARD 4: x=1200px - Dudhsagar Waterfalls Trek -->
           <div class="timeline-connector-dot" data-day="2" style="left: 1200px;"></div>
           <div class="timeline-connector-line" data-day="2" style="left: 1200px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d2-c2" data-id="d2-c2" data-type="activity" style="left: 1200px; top: calc(55% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/dudhsagar_trek.jpg" alt="Dudhsagar Waterfalls Trek">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-c2')">
+                <img class="card-node-img" src="images/dudhsagar_trek.jpg" alt="Dudhsagar Waterfalls Trek">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
             </div>
             <div class="card-node-body">
               <h3 class="card-node-name">Dudhsagar Waterfalls Trek</h3>
@@ -4070,7 +4151,10 @@
           <div class="timeline-connector-line" data-day="3" style="left: 1620px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d3-c1" data-id="d3-c1" data-type="hotel" style="left: 1620px; bottom: calc(45% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/curlies_club.jpg" alt="Curlies Beach Club">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d3-c1')">
+                <img class="card-node-img" src="images/curlies_club.jpg" alt="Curlies Beach Club">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
             </div>
             <div class="card-node-body">
               <h3 class="card-node-name">Curlies Beach Club</h3>
@@ -4086,12 +4170,15 @@
           <div class="timeline-connector-line" data-day="3" style="left: 1800px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d3-c2" data-id="d3-c2" data-type="activity" style="left: 1800px; top: calc(55% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/anjuna_market.jpg" alt="Anjuna Flea Market">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d3-c2')">
+                <img class="card-node-img" src="images/anjuna_market.jpg" alt="Anjuna Flea Market">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
             </div>
             <div class="card-node-body">
               <h3 class="card-node-name">Anjuna Flea Market</h3>
               <div class="card-node-meta">
-                <span class="price-pill">Free</span>
+                <span class="price-pill free-pill">Free</span>
                 <span class="meta-chip">⭐4.4 · Culture</span>
               </div>
             </div>
@@ -4102,7 +4189,10 @@
           <div class="timeline-connector-line confirmed" data-day="4" style="left: 2280px; bottom: 45%; height: 40px;"></div>
           <article class="card-node above" id="card-node-d4-c1" data-id="d4-c1" data-type="hotel" style="left: 2280px; bottom: calc(45% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/infantaria_bakery.jpg" alt="Infantaria Bakery">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d4-c1')">
+                <img class="card-node-img" src="images/infantaria_bakery.jpg" alt="Infantaria Bakery">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
             </div>
             <div class="card-node-body">
               <h3 class="card-node-name">Infantaria Bakery</h3>
@@ -4118,7 +4208,10 @@
           <div class="timeline-connector-line confirmed" data-day="4" style="left: 2400px; top: 55%; height: 40px;"></div>
           <article class="card-node below" id="card-node-d4-c2" data-id="d4-c2" data-type="flight" style="left: 2400px; top: calc(55% + 40px);" role="article">
             <div style="position:relative;">
-              <img class="card-node-img" src="images/indigo_flight.jpg" alt="IndiGo Return Flight">
+              <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d4-c2')">
+                <img class="card-node-img" src="images/indigo_flight.jpg" alt="IndiGo Return Flight">
+                <div class="card-expand-overlay">⛶</div>
+              </div>
               <span class="card-type-badge">✈ Flight</span>
             </div>
             <div class="card-node-body">
@@ -4544,18 +4637,19 @@
       },
       {
         id: "alt-b",
-        name: "Zostel Goa",
-        location: "Anjuna Beach",
-        price: "₹1,800/night",
-        numericPrice: 1800,
-        rating: "⭐4.6",
-        tag: "Social Hostel",
-        photo: "images/zostel_goa.jpg",
+        name: "Beachfront Villa, Anjuna",
+        location: "Airbnb",
+        price: "₹4,800/night",
+        numericPrice: 4800,
+        rating: "⭐4.95",
+        tag: "Entire villa",
+        isAirbnb: true,
+        photo: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=200",
         highlights: [
-          { icon: "🛏", text: "Standard 6-Bed Mixed Dorm Room" },
-          { icon: "✅", text: "Free cancellation before check-in" },
-          { icon: "🍳", text: "Social Cafe (Self Catering)" },
-          { icon: "📍", text: "5 minutes walk to Anjuna Beach stretch" }
+          { icon: "🛏", text: "3 beds · Private pool · 50m from beach" },
+          { icon: "✅", text: "Self check-in & free Wi-Fi" },
+          { icon: "🍳", text: "Fully equipped kitchen" },
+          { icon: "🏠", text: "Entire home/villa guest accommodation" }
         ]
       },
       {
@@ -4606,10 +4700,11 @@
       alternativeType: 'hotel',
       
       // Budget Tracker State Values
-      totalSpent: 18200,
+      totalSpent: 21400,
       flightsSpent: 8000,
       staysSpent: 8600,
       activitiesSpent: 1600,
+      foodSpent: 3200,
       totalBudget: 25000,
       
       // Right panel accordion open/closed states
@@ -4804,6 +4899,7 @@
       const flightsEl = document.getElementById('left-breakdown-flights');
       const staysEl = document.getElementById('left-breakdown-stays');
       const activitiesEl = document.getElementById('left-breakdown-activities');
+      const foodEl = document.getElementById('left-breakdown-food');
       const textEl = document.getElementById('left-budget-text');
       const fillBar = document.getElementById('left-budget-fill');
       
@@ -4822,6 +4918,10 @@
       if (activitiesEl) {
         activitiesEl.textContent = `₹${currentState.activitiesSpent.toLocaleString()}`;
         activitiesEl.style.color = '#1A1A1A';
+      }
+      if (foodEl) {
+        foodEl.textContent = `₹${(currentState.foodSpent || 3200).toLocaleString()}`;
+        foodEl.style.color = '#1A1A1A';
       }
       
       const total = value;
@@ -5272,8 +5372,9 @@
           const coorgPhoto = "images/dest_coorg.jpg";
           
           const content = `
-            <div style="font-weight: 500; margin-bottom: 12px;">Here are some amazing alternative destinations tailored for you:</div>
+            <div style="font-weight: 500; margin-bottom: 12px;">Here are some great options for a May trip — picked for the season and your vibe:</div>
             <div class="inline-dest-card" style="position: relative; width: 100%; max-width: 380px; height: 100px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('${manaliPhoto}'); background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 12px; box-sizing: border-box;">
+              <div class="seasonal-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.55); border-radius: 20px; padding: 4px 10px; color: #FFFFFF; font-size: 10px; font-weight: 500; z-index: 3;">❄️ Best time · Snow season</div>
               <div style="flex: 1; text-align: left; z-index: 2;">
                 <div style="color: #FFFFFF; font-weight: bold; font-size: 16px; line-height: 1.2;">Manali</div>
                 <div style="color: rgba(255,255,255,0.9); font-size: 12px; margin-top: 2px;">Mountains, snow & adventure</div>
@@ -5283,6 +5384,7 @@
               </button>
             </div>
             <div class="inline-dest-card" style="position: relative; width: 100%; max-width: 380px; height: 100px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('${keralaPhoto}'); background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 12px; box-sizing: border-box;">
+              <div class="seasonal-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.55); border-radius: 20px; padding: 4px 10px; color: #FFFFFF; font-size: 10px; font-weight: 500; z-index: 3;">🌧 Pre-monsoon · Lush & green</div>
               <div style="flex: 1; text-align: left; z-index: 2;">
                 <div style="color: #FFFFFF; font-weight: bold; font-size: 16px; line-height: 1.2;">Kerala</div>
                 <div style="color: rgba(255,255,255,0.9); font-size: 12px; margin-top: 2px;">Backwaters, food & total peace</div>
@@ -5292,6 +5394,7 @@
               </button>
             </div>
             <div class="inline-dest-card" style="position: relative; width: 100%; max-width: 380px; height: 100px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('${coorgPhoto}'); background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 12px; box-sizing: border-box;">
+              <div class="seasonal-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.55); border-radius: 20px; padding: 4px 10px; color: #FFFFFF; font-size: 10px; font-weight: 500; z-index: 3;">🌿 Great time · Cool & misty</div>
               <div style="flex: 1; text-align: left; z-index: 2;">
                 <div style="color: #FFFFFF; font-weight: bold; font-size: 16px; line-height: 1.2;">Coorg</div>
                 <div style="color: rgba(255,255,255,0.9); font-size: 12px; margin-top: 2px;">Misty hills, coffee & quiet</div>
@@ -5729,7 +5832,7 @@
 
     const dayStates = {
       1: { confirmed: true, date: "May 30", timeVal: "Check-in: 14:00", cardType: "hotel" },
-      2: { confirmed: false, date: "May 31", timeVal: "Not planned", cardType: "" },
+      2: { confirmed: false, date: "May 31", timeVal: "Dinner: 8:00 PM", cardType: "" },
       3: { confirmed: false, date: "Jun 1", timeVal: "Not planned", cardType: "" },
       4: { confirmed: true, date: "Jun 2", timeVal: "Not planned", flightVal: "14:30 → 16:00", cardType: "flight" }
     };
@@ -7052,6 +7155,12 @@
           const filterTagHTML = currentState.alternativeFilterTag 
             ? `<div class="alt-filter-badge">✦ ${currentState.alternativeFilterTag}</div>` 
             : '';
+          
+          const partnerFootnote = (currentState.alternativeType !== 'activity')
+            ? `<div style="margin-top: 16px; border-top: 1px solid #F5F5F5; padding-top: 8px; text-align: center;">
+                 <span style="font-size: 11px; color: #999999; font-style: italic; display: inline-block;">🤝 MMT has partnered with Airbnb to show you more stay options in one place.</span>
+               </div>`
+            : '';
             
           rightPanelScrollableContainer.innerHTML = `
             <div class="right-panel-header" style="margin-bottom: 16px;">
@@ -7064,24 +7173,34 @@
             ${filterTagHTML}
             
             <div style="display:flex; flex-direction:column;">
-              ${alternativesList.map(hotel => `
-                <article class="alternative-card">
-                  <img class="alternative-thumb" src="${hotel.photo}" alt="${hotel.name}">
-                  <div class="alternative-info">
-                    <div>
-                      <div class="alt-rating-row">${hotel.rating} <span style="font-size:9px; color:#71717A; font-weight:normal;">(${hotel.tag})</span></div>
-                      <h3 class="alt-hotel-name">${hotel.name}</h3>
-                      <div class="alt-hotel-loc">📍 ${hotel.location}</div>
+              ${alternativesList.map(hotel => {
+                const isAirbnb = hotel.id === 'alt-b' || hotel.isAirbnb;
+                const showTag = currentState.alternativeType !== 'activity';
+                const tagBg = isAirbnb ? '#FF5A5F' : '#284dff';
+                const tagText = isAirbnb ? 'Airbnb' : 'MMT Partner';
+                const tagChipHTML = showTag ? `<span class="card-tag" style="background-color: ${tagBg}; color: white; border: none; padding: 2px 6px; border-radius: 4px; font-size: 8px; font-weight: 700; text-transform: uppercase; margin-left: 6px; letter-spacing: 0.03em; display: inline-block; vertical-align: middle;">${tagText}</span>` : '';
+                const pricePrefix = isAirbnb ? '<span style="color:#FF5A5F; font-size:12px; margin-right:4px; vertical-align:middle;">🏠</span>' : '';
+                
+                return `
+                  <article class="alternative-card">
+                    <img class="alternative-thumb" src="${hotel.photo}" alt="${hotel.name}">
+                    <div class="alternative-info">
+                      <div>
+                        <div class="alt-rating-row">${hotel.rating} <span style="font-size:9px; color:#71717A; font-weight:normal;">(${hotel.tag})</span> ${tagChipHTML}</div>
+                        <h3 class="alt-hotel-name">${hotel.name}</h3>
+                        <div class="alt-hotel-loc">📍 ${hotel.location}</div>
+                      </div>
+                      <div class="alt-hotel-price">${pricePrefix}${hotel.price}</div>
+                      <div class="alt-actions-row">
+                        <button class="btn-alt-details" onclick="openAltDetailView('${hotel.id}')">View Details</button>
+                        <button class="btn-alt-add" onclick="addAlternativeToItinerary('${hotel.id}')">Add to Itinerary +</button>
+                      </div>
                     </div>
-                    <div class="alt-hotel-price">${hotel.price}</div>
-                    <div class="alt-actions-row">
-                      <button class="btn-alt-details" onclick="openAltDetailView('${hotel.id}')">View Details</button>
-                      <button class="btn-alt-add" onclick="addAlternativeToItinerary('${hotel.id}')">Add to Itinerary +</button>
-                    </div>
-                  </div>
-                </article>
-              `).join('')}
+                  </article>
+                `;
+              }).join('')}
             </div>
+            ${partnerFootnote}
           `;
           rightPanelFooterAction.innerHTML = '';
         }
@@ -7304,11 +7423,14 @@
                 </div>
                 <!-- Card B -->
                 <div class="proactive-card">
-                  <img class="proactive-thumb" src="images/cooking_class.jpg" alt="Cooking Class">
+                  <img class="proactive-thumb" src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=200" alt="Private Treehouse, Palolem">
                   <div class="proactive-details">
-                    <div class="proactive-name">Goan Fish Curry Cooking Class</div>
-                    <div class="proactive-meta">⭐4.8 · ₹900 · Unique local experience</div>
-                    <button class="proactive-action-btn" onclick="addProactiveSuggestion(2, 'cooking')">Add to Day 2 +</button>
+                    <div class="proactive-name" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                      <span style="font-weight: 700; color: #1A1A1A;">Private Treehouse, Palolem</span>
+                      <span class="card-tag" style="background-color: #FF5A5F; color: white; border: none; padding: 2px 6px; border-radius: 4px; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; display: inline-block;">Airbnb</span>
+                    </div>
+                    <div class="proactive-meta">⭐4.97 · ₹3,200/night</div>
+                    <button class="proactive-action-btn" onclick="addProactiveSuggestion(2, 'treehouse')">Add to Day 2 +</button>
                   </div>
                 </div>
                 <!-- Card C -->
@@ -7913,7 +8035,12 @@
     }
 
     // CAROUSEL & LIGHTBOX DYNAMIC INTERACTION HELPERS
+    window.lightboxCustomImages = null;
+
     window.getCurrentCarouselImages = function() {
+      if (window.lightboxCustomImages) {
+        return window.lightboxCustomImages;
+      }
       if (currentState.isQuickViewActive && currentState.quickViewData) {
         const type = currentState.quickViewData.type;
         if (type === 'hotel' || type === 'activity') {
@@ -7929,6 +8056,39 @@
         }
       }
       return null;
+    };
+
+    window.openCardImageLightbox = function(cardId) {
+      const cardNode = document.getElementById('card-node-' + cardId) || document.querySelector(`[data-id="${cardId}"]`);
+      if (!cardNode) return;
+      const imgEl = cardNode.querySelector('.card-node-img');
+      if (!imgEl) return;
+      const imgUrl = imgEl.src;
+      const type = cardNode.getAttribute('data-type');
+      
+      const hasCarousel = (type === 'hotel' || type === 'activity');
+      const overlay = document.getElementById('lightbox-overlay');
+      const prevBtn = overlay ? overlay.querySelector('.lightbox-prev-btn') : null;
+      const nextBtn = overlay ? overlay.querySelector('.lightbox-next-btn') : null;
+      
+      if (hasCarousel) {
+        const baseImages = CAROUSEL_IMAGES[type] || [];
+        let images = [imgUrl];
+        for (let url of baseImages) {
+          if (url !== imgUrl && !images.includes(url)) {
+            images.push(url);
+          }
+        }
+        window.lightboxCustomImages = images;
+        if (prevBtn) prevBtn.style.display = 'block';
+        if (nextBtn) nextBtn.style.display = 'block';
+      } else {
+        window.lightboxCustomImages = [imgUrl];
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+      }
+      
+      window.openLightbox(0);
     };
 
     window.selectCarouselIndex = function(idx) {
@@ -8003,6 +8163,12 @@
         overlay.classList.remove('show');
         setTimeout(() => {
           overlay.style.display = 'none';
+          window.lightboxCustomImages = null;
+          // Restore navigation buttons visibility
+          const prevBtn = overlay.querySelector('.lightbox-prev-btn');
+          const nextBtn = overlay.querySelector('.lightbox-next-btn');
+          if (prevBtn) prevBtn.style.display = 'block';
+          if (nextBtn) nextBtn.style.display = 'block';
         }, 250);
       }
     };
@@ -8321,11 +8487,16 @@
       }
       
       card.innerHTML = `
-        <img class="card-node-img" src="${photo}" alt="${name}">
+        <div style="position:relative;">
+          <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('${cardId}')">
+            <img class="card-node-img" src="${photo}" alt="${name}">
+            <div class="card-expand-overlay">⛶</div>
+          </div>
+        </div>
         <div class="card-node-body">
           <h3 class="card-node-name">${name}</h3>
           <div class="card-node-meta">
-            <span class="price-pill">${priceVal === 0 ? 'Free' : '₹' + priceVal.toLocaleString('en-IN')}</span>
+            <span class="price-pill ${priceVal === 0 ? 'free-pill' : ''}">${priceVal === 0 ? 'Free' : '₹' + priceVal.toLocaleString('en-IN')}</span>
             <span class="meta-chip">⭐4.8 · Activity</span>
           </div>
         </div>
@@ -8552,23 +8723,23 @@
           ]
         };
         priceDiff = 1200;
-      } else if (itemKey === 'cooking') {
+      } else if (itemKey === 'treehouse') {
         newCardData = {
-          id: "new-cooking-d2",
-          type: "activity",
-          name: "Goan Fish Curry Cooking Class",
-          price: "₹900",
-          location: "Panaji Kitchen",
-          rating: "4.8",
-          tags: ["Cooking Class", "Proactive Add"],
-          photo: "images/cooking_class.jpg",
+          id: "new-treehouse-d2",
+          type: "stay",
+          name: "Private Treehouse, Palolem",
+          price: "₹3,200/night",
+          location: "Palolem",
+          rating: "4.97",
+          tags: ["Airbnb", "Treehouse"],
+          photo: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=200",
           reasons: [
-            "Learn authentic Goan culinary spice secrets",
-            "Prepare 3-course organic meal with chef",
-            "Private small-group class with standard safety checks"
+            "Scenic eco-friendly treehouse in high coconut trees of Palolem",
+            "Perfect panoramic views of South Goa canopy scenery",
+            "Highly safe gated resort property for solo guests"
           ]
         };
-        priceDiff = 900;
+        priceDiff = 3200;
       } else if (itemKey === 'yoga') {
         newCardData = {
           id: "new-yoga-d4",
@@ -9935,6 +10106,10 @@
               <span class="price-label">Activities</span>
               <span id="price-activities" class="price-val">₹2,500</span>
             </div>
+            <div class="price-row" style="color: #666666;">
+              <span class="price-label" style="color: #666666;">🍽 Food (est.)</span>
+              <span id="price-food" class="price-val" style="color: #666666; font-weight: normal;">₹3,200</span>
+            </div>
             <div class="price-divider"></div>
             <div class="price-row">
               <span class="price-label" style="font-weight: 700; color: #1A1A1A;">Subtotal</span>
@@ -10237,6 +10412,28 @@
         `;
       });
       
+      // CHANGE 5: Append Food Estimates Section
+      html += `
+        <div class="booking-section-header" style="margin-top: 24px; margin-bottom: 12px; display: flex; align-items: baseline; justify-content: space-between;">
+          <h3 style="font-size: 11px; font-weight: 700; color: #1A1A1A; margin: 0; letter-spacing: 0.05em; text-transform: uppercase;">🍽 FOOD ESTIMATES</h3>
+          <span style="color: #999999; font-size: 10px; font-style: italic;">Estimates only — not bookable</span>
+        </div>
+        <div class="ticket-card" style="margin-bottom: 12px; background: #FAFAFA; border: 1px dashed #E0E0E0; border-radius: 16px; display: flex; overflow: hidden; box-shadow: none; opacity: 0.85;">
+          <div class="ticket-accent-strip" style="background-color: #FF6B35;"></div>
+          <div class="ticket-left" style="padding: 16px; flex: 1; display: flex; flex-direction: column;">
+            <div class="ticket-category-row">
+              <span class="ticket-category-icon-label" style="font-size: 9px; color: #999999;">🍽 FOOD</span>
+            </div>
+            <div class="ticket-name" style="font-size: 14px; font-weight: 600; color: #1A1A1A;">Daily Food Budget</div>
+            <div class="ticket-detail" style="font-size: 12px; color: #666666;">4 days · ~₹3,200 total</div>
+          </div>
+          <div class="ticket-right" style="padding: 16px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; width: 80px; flex-shrink: 0; border-left: 1px solid #F0F0F0; background: #FFFFFF;">
+            <div class="ticket-price" style="font-size: 15px; color: #999999; font-weight: 400;">₹3,200</div>
+            <div class="ticket-price-unit" style="font-size: 9px; color: #999999;">estimate</div>
+          </div>
+        </div>
+      `;
+      
       container.innerHTML = html;
     };
 
@@ -10274,6 +10471,7 @@
       let flightsSum = 0;
       let staysSum = 0;
       let activitiesSum = 0;
+      const foodEst = 3200;
       
       window.bookingState.items.forEach(item => {
         if (item.checked) {
@@ -10283,13 +10481,14 @@
         }
       });
       
-      const subtotal = flightsSum + staysSum + activitiesSum;
+      const subtotal = flightsSum + staysSum + activitiesSum + foodEst;
       const taxes = Math.round(subtotal * 0.06053412);
       const total = subtotal + taxes;
       
       const flightsEl = document.getElementById("price-flights");
       const staysEl = document.getElementById("price-stays");
       const activitiesEl = document.getElementById("price-activities");
+      const foodEl = document.getElementById("price-food");
       const subtotalEl = document.getElementById("price-subtotal");
       const taxesEl = document.getElementById("price-taxes");
       const totalEl = document.getElementById("price-total");
@@ -10298,6 +10497,7 @@
       const currFlights = parseInt(flightsEl.innerText.replace(/[^\d]/g, '')) || 0;
       const currStays = parseInt(staysEl.innerText.replace(/[^\d]/g, '')) || 0;
       const currActivities = parseInt(activitiesEl.innerText.replace(/[^\d]/g, '')) || 0;
+      const currFood = foodEl ? (parseInt(foodEl.innerText.replace(/[^\d]/g, '')) || 0) : 0;
       const currSubtotal = parseInt(subtotalEl.innerText.replace(/[^\d]/g, '')) || 0;
       const currTaxes = parseInt(taxesEl.innerText.replace(/[^\d]/g, '')) || 0;
       const currTotal = parseInt(totalEl.innerText.replace(/[^\d]/g, '')) || 0;
@@ -10306,6 +10506,7 @@
         flights: currFlights,
         stays: currStays,
         activities: currActivities,
+        food: currFood,
         subtotal: currSubtotal,
         taxes: currTaxes,
         total: currTotal
@@ -10315,6 +10516,7 @@
         flights: flightsSum,
         stays: staysSum,
         activities: activitiesSum,
+        food: foodEst,
         subtotal: subtotal,
         taxes: taxes,
         total: total,
@@ -10323,6 +10525,7 @@
           flights: 1,
           stays: 1,
           activities: 1,
+          food: 1,
           subtotal: 1,
           taxes: 1,
           total: 1
@@ -10331,6 +10534,7 @@
           flightsEl.innerText = "₹" + Math.round(priceObj.flights).toLocaleString('en-IN');
           staysEl.innerText = "₹" + Math.round(priceObj.stays).toLocaleString('en-IN');
           activitiesEl.innerText = "₹" + Math.round(priceObj.activities).toLocaleString('en-IN');
+          if (foodEl) foodEl.innerText = "₹" + Math.round(priceObj.food).toLocaleString('en-IN');
           subtotalEl.innerText = "₹" + Math.round(priceObj.subtotal).toLocaleString('en-IN');
           taxesEl.innerText = "₹" + Math.round(priceObj.taxes).toLocaleString('en-IN');
           totalEl.innerText = "₹" + Math.round(priceObj.total).toLocaleString('en-IN');
