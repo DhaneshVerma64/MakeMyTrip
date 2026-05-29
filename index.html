@@ -3078,6 +3078,7 @@
       pointer-events: none;
       transform: translateX(-50%);
       z-index: 10;
+      transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .day-vertical-line {
@@ -5879,7 +5880,15 @@
         canvasOuterElement.classList.remove('canvas-hidden');
         canvasOuterElement.style.opacity = '0';
         canvasOuterElement.style.pointerEvents = 'auto';
-        gsap.to(canvasOuterElement, { opacity: 1, duration: 0.6 });
+        gsap.to(canvasOuterElement, { 
+          opacity: 1, 
+          duration: 0.6,
+          onComplete: () => {
+            if (typeof window.initDraggable === 'function') {
+              window.initDraggable();
+            }
+          }
+        });
       }
 
       // 4. Slide in Right Panel
@@ -6085,6 +6094,163 @@
       });
     };
 
+    // Helpers to find card associations and day numbers
+    window.getCardDayNum = function(card) {
+      const id = card.getAttribute('data-id') || card.id || '';
+      if (id.includes('d1')) return 1;
+      if (id.includes('d2')) return 2;
+      if (id.includes('d3')) return 3;
+      if (id.includes('d4')) return 4;
+      
+      const dot = window.getCardConnectorDot(card);
+      if (dot) {
+        return parseInt(dot.getAttribute('data-day')) || 1;
+      }
+      return 1;
+    };
+
+    window.getCardConnectorDot = function(card) {
+      const baseLeft = parseFloat(card.style.left) || 0;
+      const dots = document.querySelectorAll('.timeline-connector-dot');
+      for (let d of dots) {
+        if (Math.abs((parseFloat(d.style.left) || 0) - baseLeft) < 2) {
+          return d;
+        }
+      }
+      return null;
+    };
+
+    window.getCardConnectorLine = function(card) {
+      const baseLeft = parseFloat(card.style.left) || 0;
+      const lines = document.querySelectorAll('.timeline-connector-line');
+      for (let l of lines) {
+        if (Math.abs((parseFloat(l.style.left) || 0) - baseLeft) < 2) {
+          return l;
+        }
+      }
+      return null;
+    };
+
+    // DYNAMIC TIMELINE LAYOUT RECALCULATION ENGINE
+    window.recalculateTimelineLayout = function() {
+      const innerTimeline = document.getElementById('innerTimeline');
+      if (!innerTimeline) return;
+      
+      // 1. Find all active cards
+      const cards = Array.from(document.querySelectorAll('.card-node')).filter(c => c.style.display !== 'none');
+      
+      // Group cards by day
+      const dayCards = { 1: [], 2: [], 3: [], 4: [] };
+      cards.forEach(card => {
+        const day = window.getCardDayNum(card);
+        dayCards[day].push(card);
+      });
+      
+      // Sort cards chronologically by absolute position (style.left + GSAP translate X offset)
+      for (let d = 1; d <= 4; d++) {
+        dayCards[d].sort((a, b) => {
+          const aLeft = parseFloat(a.style.left) || 0;
+          const aX = gsap.getProperty(a, "x") || 0;
+          const bLeft = parseFloat(b.style.left) || 0;
+          const bX = gsap.getProperty(b, "x") || 0;
+          return (aLeft + aX) - (bLeft + bX);
+        });
+      }
+      
+      let currentStartX = 0;
+      
+      for (let d = 1; d <= 4; d++) {
+        // Position Day Marker
+        const dayMarker = document.getElementById('day-marker-' + d);
+        if (dayMarker) {
+          dayMarker.style.left = `${currentStartX}px`;
+        }
+        
+        const activeCards = dayCards[d];
+        let lastCardX = currentStartX;
+        
+        activeCards.forEach((card, index) => {
+          let targetX = currentStartX + 120; // Default offset for first card
+          
+          if (index > 0) {
+            const prevCard = activeCards[index - 1];
+            const prevCardX = parseFloat(prevCard.style.left) || 0;
+            const prevIsAbove = prevCard.classList.contains('above');
+            const currIsAbove = card.classList.contains('above');
+            
+            // Spacing based on whether they are on the same side or opposite sides
+            const spacing = (prevIsAbove === currIsAbove) ? 260 : 160;
+            targetX = prevCardX + spacing;
+          }
+          
+          // Snap to nearest 60px increment
+          targetX = Math.round(targetX / 60) * 60;
+          
+          // Set baseline style.left and reset translate X
+          card.style.left = `${targetX}px`;
+          gsap.set(card, { x: 0 });
+          
+          // Update associated dot
+          const dot = window.getCardConnectorDot(card);
+          if (dot) {
+            dot.style.left = `${targetX}px`;
+            gsap.set(dot, { x: 0 });
+          }
+          
+          // Update associated line
+          const line = window.getCardConnectorLine(card);
+          if (line) {
+            line.style.left = `${targetX}px`;
+            gsap.set(line, { x: 0 });
+          }
+          
+          // Update associated time label
+          const cardId = card.getAttribute('data-id') || card.id.replace('card-node-', '');
+          const cardType = card.getAttribute('data-type') || 'activity';
+          const label = document.getElementById('time-label-' + cardId);
+          if (label) {
+            label.style.left = `${targetX}px`;
+            gsap.set(label, { x: 0 });
+            label.textContent = window.getSpineLabelTextForCard(cardType, targetX);
+          }
+          
+          // Dynamic Day Marker planned time update for Fisherman's Wharf
+          if (cardId === 'd2-food') {
+            const dayTime2 = document.getElementById('day-time-2');
+            if (dayTime2) {
+              dayTime2.textContent = "Dinner: " + window.formatTimeFromX(targetX);
+            }
+          }
+          
+          lastCardX = targetX;
+        });
+        
+        // Day d+1 starting coordinate
+        if (activeCards.length > 0) {
+          currentStartX = Math.round((lastCardX + 220) / 60) * 60;
+        } else {
+          currentStartX += 300;
+        }
+      }
+      
+      // Update overall innerTimeline container width dynamically
+      const finalTimelineWidth = Math.max(2400, currentStartX + 120);
+      innerTimeline.style.width = `${finalTimelineWidth}px`;
+      
+      const beam = document.getElementById('traveling-beam');
+      if (beam) {
+        beam.style.width = `${finalTimelineWidth}px`;
+      }
+      
+      // Update the timeline pan draggable boundaries dynamically
+      const container = document.getElementById('canvasOuter');
+      if (container && timelineDraggable) {
+        const viewportWidth = container.offsetWidth;
+        const maxDrag = Math.min(0, viewportWidth - finalTimelineWidth);
+        timelineDraggable.applyBounds({ minX: maxDrag, maxX: 0 });
+      }
+    };
+
     // Initialize Card Draggables
     window.initCardDraggables = function() {
       if (!window.Draggable) return;
@@ -6129,6 +6295,24 @@
               duration: 0.2
             });
             
+            // Calculate active day boundaries to prevent overlapping day markers & weather widgets
+            const dayNum = window.getCardDayNum(this.target);
+            const dayMarker = document.getElementById('day-marker-' + dayNum);
+            const nextDayMarker = document.getElementById('day-marker-' + (dayNum + 1));
+            
+            const dayMarkerX = dayMarker ? (parseFloat(dayMarker.style.left) || 0) : 0;
+            const timelineWidth = parseFloat(document.getElementById('innerTimeline').style.width) || 2400;
+            const nextDayMarkerX = nextDayMarker ? (parseFloat(nextDayMarker.style.left) || timelineWidth) : timelineWidth;
+            
+            const minAbsX = dayMarkerX + 145;
+            const maxAbsX = nextDayMarkerX - 145;
+            
+            const minX = minAbsX - baseLeft;
+            const maxX = maxAbsX - baseLeft;
+            
+            // Dynamically apply boundaries to GSAP Draggable
+            this.applyBounds({ minX: minX, maxX: maxX });
+            
             // Show time ghost
             window.showTimeGhost(this.target);
           },
@@ -6148,9 +6332,23 @@
             });
             
             // Math for snapping to nearest 30-minute interval (60px step)
+            const dayNum = window.getCardDayNum(this.target);
+            const dayMarker = document.getElementById('day-marker-' + dayNum);
+            const nextDayMarker = document.getElementById('day-marker-' + (dayNum + 1));
+            
+            const dayMarkerX = dayMarker ? (parseFloat(dayMarker.style.left) || 0) : 0;
+            const timelineWidthEnd = parseFloat(document.getElementById('innerTimeline').style.width) || 2400;
+            const nextDayMarkerX = nextDayMarker ? (parseFloat(nextDayMarker.style.left) || timelineWidthEnd) : timelineWidthEnd;
+            
+            const minAbsX = dayMarkerX + 145;
+            const maxAbsX = nextDayMarkerX - 145;
+            
             const currentAbsoluteX = baseLeft + this.x;
             const snappedAbsoluteX = Math.round(currentAbsoluteX / 60) * 60;
-            const snappedX = snappedAbsoluteX - baseLeft;
+            
+            // Clamp snapped position within safe bounds
+            const clampedSnappedAbsoluteX = Math.max(minAbsX, Math.min(maxAbsX, snappedAbsoluteX));
+            const snappedX = clampedSnappedAbsoluteX - baseLeft;
             
             // Retrieve associated dot, line, and label
             let dot = null;
@@ -6187,7 +6385,7 @@
               const otherIsAbove = other.classList.contains('above');
               
               if (targetIsAbove === otherIsAbove) {
-                if (Math.abs(snappedAbsoluteX - otherAbsX) < 180) {
+                if (Math.abs(clampedSnappedAbsoluteX - otherAbsX) < 180) {
                   conflictCard = other;
                   break;
                 }
@@ -6226,21 +6424,23 @@
               }
             } else {
               // Snap all connected elements smoothly
-              gsap.to(this.target, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
+              gsap.to(this.target, { 
+                x: snappedX, 
+                duration: 0.3, 
+                ease: "back.out(1.4)",
+                onComplete: () => {
+                  // Re-evaluate the entire timeline layout chronologically and space them beautifully!
+                  if (typeof window.recalculateTimelineLayout === 'function') {
+                    window.recalculateTimelineLayout();
+                  }
+                }
+              });
               if (dot) gsap.to(dot, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
               if (line) gsap.to(line, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
               
               if (label) {
                 gsap.to(label, { x: snappedX, duration: 0.3, ease: "back.out(1.4)" });
-                label.textContent = window.getSpineLabelTextForCard(cardType, snappedAbsoluteX);
-              }
-              
-              // Dynamic Day Marker planned time update for Fisherman's Wharf
-              if (cardId === 'd2-food') {
-                const dayTime2 = document.getElementById('day-time-2');
-                if (dayTime2) {
-                  dayTime2.textContent = "Dinner: " + window.formatTimeFromX(snappedAbsoluteX);
-                }
+                label.textContent = window.getSpineLabelTextForCard(cardType, clampedSnappedAbsoluteX);
               }
             }
           }
@@ -6284,6 +6484,11 @@
         })[0];
         
         gsap.set("#innerTimeline", { x: 0 });
+        
+        // Recalculate timeline layout to apply dynamic spacing and update bounds
+        if (typeof window.recalculateTimelineLayout === 'function') {
+          window.recalculateTimelineLayout();
+        }
         
         // Initialize card draggables on timelines
         if (typeof window.initCardDraggables === 'function') {
@@ -8851,6 +9056,9 @@
             duration: 0.5, 
             ease: "back.out(1.4)",
             onComplete: () => {
+              if (typeof window.recalculateTimelineLayout === 'function') {
+                window.recalculateTimelineLayout();
+              }
               if (typeof window.initCardDraggables === 'function') {
                 window.initCardDraggables();
               }
@@ -9404,6 +9612,11 @@
         onComplete: () => {
           card.remove();
           
+          // Recalculate timeline layout to shift remaining cards and heal gaps
+          if (typeof window.recalculateTimelineLayout === 'function') {
+            window.recalculateTimelineLayout();
+          }
+          
           // Update budget spent metrics
           const cardType = card.getAttribute('data-type');
           window.updateBudgetAfterRemoval(cardType, priceVal);
@@ -9426,8 +9639,8 @@
         }
       });
       
-      if (dot) gsap.to(dot, { opacity: 0, scale: 0, duration: 0.3 });
-      if (line) gsap.to(line, { opacity: 0, duration: 0.3 });
+      if (dot) gsap.to(dot, { opacity: 0, scale: 0, duration: 0.3, onComplete: () => dot.remove() });
+      if (line) gsap.to(line, { opacity: 0, duration: 0.3, onComplete: () => line.remove() });
       
       const label = document.getElementById('time-label-' + cardId);
       if (label) gsap.to(label, { opacity: 0, scale: 0.8, duration: 0.3 });
@@ -9537,6 +9750,10 @@
       
       const label = document.getElementById('time-label-' + cardId);
       if (label) gsap.fromTo(label, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3 });
+      
+      if (typeof window.recalculateTimelineLayout === 'function') {
+        window.recalculateTimelineLayout();
+      }
       
       if (typeof window.initCardDraggables === 'function') {
         window.initCardDraggables();
