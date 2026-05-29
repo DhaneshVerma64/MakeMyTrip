@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>PLAN by MakeMyTrip — AI Trip Canvas</title>
   
   <!-- SEO Meta Tags -->
@@ -3044,7 +3047,7 @@
       height: 2px;
       background-color: #D0D0D0;
       z-index: 5;
-      transform: translateY(-50%);
+      translate: 0 -50%;
     }
 
     /* Restored simple traveling beam */
@@ -3054,7 +3057,7 @@
       left: 0;
       width: 120px;
       height: 2px;
-      transform: translateY(-50%);
+      translate: 0 -50%;
       background: linear-gradient(90deg,
         transparent 0%,
         #065af3 40%,
@@ -3076,7 +3079,7 @@
       flex-direction: column;
       align-items: center;
       pointer-events: none;
-      transform: translateX(-50%);
+      translate: -50% 0;
       z-index: 10;
       transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
@@ -3187,7 +3190,6 @@
       z-index: 15;
       display: flex;
       flex-direction: column;
-      margin-left: -105px; /* Replaces transform: translateX(-50%) to avoid conflict with GSAP Draggable */
       transition: opacity 0.25s ease, border-color 0.2s ease;
     }
 
@@ -3290,7 +3292,8 @@
       height: 8px;
       background-color: #CCCCCC;
       top: 55%;
-      transform: translate(-50%, -50%) rotate(45deg);
+      rotate: 45deg;
+      translate: -50% -50%;
       z-index: 12;
       pointer-events: none;
       transition: background-color 0.3s ease;
@@ -3316,7 +3319,7 @@
     /* SPINE TIME LABEL STYLES */
     .timeline-time-label {
       position: absolute;
-      transform: translate(-50%, -50%);
+      translate: -50% -50%;
       background: #FFFFFF;
       border: 1px solid #E8E8E8;
       border-radius: 20px;
@@ -4091,12 +4094,12 @@
           <div class="timeline-time-label below-spine" id="time-label-d3-c1" style="left: 1620px;">9:00 PM – 2:00 AM</div>
           <div class="timeline-time-label above-spine" id="time-label-d3-c2" style="left: 1800px;">10:00 AM – 1:00 PM</div>
           <div class="timeline-time-label below-spine" id="time-label-d4-c1" style="left: 2280px;">9:00 AM – 10:30 AM</div>
-          <div class="timeline-time-label above-spine" id="time-label-d4-c2" style="left: 2400px;">2:30 PM → 4:00 PM</div>Logical
+          <div class="timeline-time-label above-spine" id="time-label-d4-c2" style="left: 2400px;">2:30 PM → 4:00 PM</div>
 
           <!-- ABOVE CARD 0: x=120px - IndiGo Arrival Flight (Blr → Goa) -->
           <div class="timeline-connector-dot confirmed" data-day="1" style="left: 120px;"></div>
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 120px; bottom: 45%; height: 40px;"></div>
-          <article class="card-node above" id="card-node-d1-c0" data-id="d1-c0" data-type="flight" style="left: 120px; bottom: calc(45% + 40px);" role="article">
+          <article class="card-node above" id="card-node-d1-c0" data-id="d1-c0" data-type="flight" style="left: 15px; bottom: calc(45% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c0')">
@@ -4117,7 +4120,7 @@
           <!-- ABOVE CARD 1: x=480px - Taj Fort Aguada Resort (Check-in) -->
           <div class="timeline-connector-dot confirmed" data-day="1" style="left: 480px;"></div>
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 480px; bottom: 45%; height: 40px;"></div>
-          <article class="card-node above" id="card-node-d1-c1" data-id="d1-c1" data-type="hotel" style="left: 480px; bottom: calc(45% + 40px);" role="article">
+          <article class="card-node above" id="card-node-d1-c1" data-id="d1-c1" data-type="hotel" style="left: 375px; bottom: calc(45% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c1')">
@@ -4137,7 +4140,7 @@
           <!-- BELOW CARD 2: x=660px - Baga Beach Sunset Walk (Evening activity) -->
           <div class="timeline-connector-dot confirmed" data-day="1" style="left: 660px;"></div>
           <div class="timeline-connector-line confirmed" data-day="1" style="left: 660px; top: 55%; height: 40px;"></div>
-          <article class="card-node below" id="card-node-d1-c2" data-id="d1-c2" data-type="activity" style="left: 660px; top: calc(55% + 40px);" role="article">
+          <article class="card-node below" id="card-node-d1-c2" data-id="d1-c2" data-type="activity" style="left: 555px; top: calc(55% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d1-c2')">
@@ -4157,7 +4160,7 @@
           <!-- ABOVE CARD 3: x=1020px - Palolem Beach Shack Stay -->
           <div class="timeline-connector-dot" data-day="2" style="left: 1020px;"></div>
           <div class="timeline-connector-line" data-day="2" style="left: 1020px; bottom: 45%; height: 40px;"></div>
-          <article class="card-node above" id="card-node-d2-c1" data-id="d2-c1" data-type="hotel" style="left: 1020px; bottom: calc(45% + 40px);" role="article">
+          <article class="card-node above" id="card-node-d2-c1" data-id="d2-c1" data-type="hotel" style="left: 915px; bottom: calc(45% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-c1')">
@@ -4177,7 +4180,7 @@
           <!-- BELOW FOOD CARD: x=1120px - Fisherman's Wharf, Cavelossim -->
           <div class="timeline-connector-dot" data-day="2" style="left: 1120px;"></div>
           <div class="timeline-connector-line" data-day="2" style="left: 1120px; top: 55%; height: 40px;"></div>
-          <article class="card-node below" id="card-node-d2-food" data-id="d2-food" data-type="restaurant" style="left: 1120px; top: calc(55% + 40px);" role="article">
+          <article class="card-node below" id="card-node-d2-food" data-id="d2-food" data-type="restaurant" style="left: 1015px; top: calc(55% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-food')">
@@ -4198,7 +4201,7 @@
           <!-- BELOW CARD 4: x=1200px - Dudhsagar Waterfalls Trek -->
           <div class="timeline-connector-dot" data-day="2" style="left: 1200px;"></div>
           <div class="timeline-connector-line" data-day="2" style="left: 1200px; top: 55%; height: 40px;"></div>
-          <article class="card-node below" id="card-node-d2-c2" data-id="d2-c2" data-type="activity" style="left: 1200px; top: calc(55% + 40px);" role="article">
+          <article class="card-node below" id="card-node-d2-c2" data-id="d2-c2" data-type="activity" style="left: 1095px; top: calc(55% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d2-c2')">
@@ -4218,7 +4221,7 @@
           <!-- ABOVE CARD 5: x=1620px - Curlies Beach Club -->
           <div class="timeline-connector-dot" data-day="3" style="left: 1620px;"></div>
           <div class="timeline-connector-line" data-day="3" style="left: 1620px; bottom: 45%; height: 40px;"></div>
-          <article class="card-node above" id="card-node-d3-c1" data-id="d3-c1" data-type="hotel" style="left: 1620px; bottom: calc(45% + 40px);" role="article">
+          <article class="card-node above" id="card-node-d3-c1" data-id="d3-c1" data-type="hotel" style="left: 1515px; bottom: calc(45% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d3-c1')">
@@ -4238,7 +4241,7 @@
           <!-- BELOW CARD 6: x=1800px - Anjuna Flea Market -->
           <div class="timeline-connector-dot" data-day="3" style="left: 1800px;"></div>
           <div class="timeline-connector-line" data-day="3" style="left: 1800px; top: 55%; height: 40px;"></div>
-          <article class="card-node below" id="card-node-d3-c2" data-id="d3-c2" data-type="activity" style="left: 1800px; top: calc(55% + 40px);" role="article">
+          <article class="card-node below" id="card-node-d3-c2" data-id="d3-c2" data-type="activity" style="left: 1695px; top: calc(55% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d3-c2')">
@@ -4258,7 +4261,7 @@
           <!-- ABOVE CARD 7: x=2280px - Infantaria Bakery -->
           <div class="timeline-connector-dot confirmed" data-day="4" style="left: 2280px;"></div>
           <div class="timeline-connector-line confirmed" data-day="4" style="left: 2280px; bottom: 45%; height: 40px;"></div>
-          <article class="card-node above" id="card-node-d4-c1" data-id="d4-c1" data-type="hotel" style="left: 2280px; bottom: calc(45% + 40px);" role="article">
+          <article class="card-node above" id="card-node-d4-c1" data-id="d4-c1" data-type="hotel" style="left: 2175px; bottom: calc(45% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d4-c1')">
@@ -4278,7 +4281,7 @@
           <!-- BELOW CARD 8: x=2400px - IndiGo Return Flight -->
           <div class="timeline-connector-dot confirmed" data-day="4" style="left: 2400px;"></div>
           <div class="timeline-connector-line confirmed" data-day="4" style="left: 2400px; top: 55%; height: 40px;"></div>
-          <article class="card-node below" id="card-node-d4-c2" data-id="d4-c2" data-type="flight" style="left: 2400px; top: calc(55% + 40px);" role="article">
+          <article class="card-node below" id="card-node-d4-c2" data-id="d4-c2" data-type="flight" style="left: 2295px; top: calc(55% + 40px);" role="article">
             <div class="card-drag-handle"><div class="card-drag-line"></div><div class="card-drag-line"></div></div>
             <div style="position:relative;">
               <div class="card-node-img-wrapper" onclick="event.stopPropagation(); window.openCardImageLightbox('d4-c2')">
@@ -6056,7 +6059,7 @@
       }
       
       const baseLeft = parseFloat(target.style.left) || 0;
-      const currentX = baseLeft + (gsap.getProperty(target, "x") || 0);
+      const currentX = baseLeft + 105 + (gsap.getProperty(target, "x") || 0);
       
       ghost.style.display = 'block';
       ghost.textContent = window.formatTimeFromX(currentX);
@@ -6074,7 +6077,7 @@
       if (!ghost) return;
       
       const baseLeft = parseFloat(target.style.left) || 0;
-      const currentX = baseLeft + xOffset;
+      const currentX = baseLeft + 105 + xOffset;
       
       ghost.textContent = window.formatTimeFromX(currentX);
       gsap.set(ghost, { x: currentX });
@@ -6111,9 +6114,10 @@
 
     window.getCardConnectorDot = function(card) {
       const baseLeft = parseFloat(card.style.left) || 0;
+      const originalDotX = baseLeft + 105;
       const dots = document.querySelectorAll('.timeline-connector-dot');
       for (let d of dots) {
-        if (Math.abs((parseFloat(d.style.left) || 0) - baseLeft) < 2) {
+        if (Math.abs((parseFloat(d.style.left) || 0) - originalDotX) < 2) {
           return d;
         }
       }
@@ -6122,9 +6126,10 @@
 
     window.getCardConnectorLine = function(card) {
       const baseLeft = parseFloat(card.style.left) || 0;
+      const originalDotX = baseLeft + 105;
       const lines = document.querySelectorAll('.timeline-connector-line');
       for (let l of lines) {
-        if (Math.abs((parseFloat(l.style.left) || 0) - baseLeft) < 2) {
+        if (Math.abs((parseFloat(l.style.left) || 0) - originalDotX) < 2) {
           return l;
         }
       }
@@ -6157,7 +6162,7 @@
         });
       }
       
-      let currentStartX = 0;
+      let currentStartX = 120; // Start at 120px to prevent Day 1 marker from being cut off on the left edge
       
       for (let d = 1; d <= 4; d++) {
         // Position Day Marker
@@ -6180,25 +6185,25 @@
             
             // Spacing based on whether they are on the same side or opposite sides
             const spacing = (prevIsAbove === currIsAbove) ? 260 : 160;
-            targetX = prevCardX + spacing;
+            targetX = prevCardX + 105 + spacing;
           }
           
           // Snap to nearest 60px increment
           targetX = Math.round(targetX / 60) * 60;
           
+          // Find associated dot and line BEFORE updating card's style.left
+          const dot = window.getCardConnectorDot(card);
+          const line = window.getCardConnectorLine(card);
+          
           // Set baseline style.left and reset translate X
-          card.style.left = `${targetX}px`;
+          card.style.left = `${targetX - 105}px`;
           gsap.set(card, { x: 0 });
           
-          // Update associated dot
-          const dot = window.getCardConnectorDot(card);
           if (dot) {
             dot.style.left = `${targetX}px`;
             gsap.set(dot, { x: 0 });
           }
           
-          // Update associated line
-          const line = window.getCardConnectorLine(card);
           if (line) {
             line.style.left = `${targetX}px`;
             gsap.set(line, { x: 0 });
@@ -6233,8 +6238,8 @@
         }
       }
       
-      // Update overall innerTimeline container width dynamically
-      const finalTimelineWidth = Math.max(2400, currentStartX + 120);
+      // Update overall innerTimeline container width dynamically (restricted strictly to the last card)
+      const finalTimelineWidth = currentStartX + 120;
       innerTimeline.style.width = `${finalTimelineWidth}px`;
       
       const beam = document.getElementById('traveling-beam');
@@ -6276,7 +6281,6 @@
         
         const cardId = card.getAttribute('data-id') || card.id.replace('card-node-', '');
         const cardType = card.getAttribute('data-type') || 'activity';
-        const baseLeft = parseFloat(card.style.left) || 0;
         
         const dragInstances = Draggable.create(card, {
           type: "x",
@@ -6295,6 +6299,10 @@
               duration: 0.2
             });
             
+            // Compute real-time baseline dot coordinate from current card position
+            const currentBaseLeft = parseFloat(this.target.style.left) || 0;
+            const currentOriginalDotX = currentBaseLeft + 105;
+            
             // Calculate active day boundaries to prevent overlapping day markers & weather widgets
             const dayNum = window.getCardDayNum(this.target);
             const dayMarker = document.getElementById('day-marker-' + dayNum);
@@ -6307,8 +6315,8 @@
             const minAbsX = dayMarkerX + 145;
             const maxAbsX = nextDayMarkerX - 145;
             
-            const minX = minAbsX - baseLeft;
-            const maxX = maxAbsX - baseLeft;
+            const minX = minAbsX - currentOriginalDotX;
+            const maxX = maxAbsX - currentOriginalDotX;
             
             // Dynamically apply boundaries to GSAP Draggable
             this.applyBounds({ minX: minX, maxX: maxX });
@@ -6331,6 +6339,10 @@
               duration: 0.2
             });
             
+            // Compute real-time baseline dot coordinate from current card position
+            const currentBaseLeft = parseFloat(this.target.style.left) || 0;
+            const currentOriginalDotX = currentBaseLeft + 105;
+            
             // Math for snapping to nearest 30-minute interval (60px step)
             const dayNum = window.getCardDayNum(this.target);
             const dayMarker = document.getElementById('day-marker-' + dayNum);
@@ -6343,12 +6355,12 @@
             const minAbsX = dayMarkerX + 145;
             const maxAbsX = nextDayMarkerX - 145;
             
-            const currentAbsoluteX = baseLeft + this.x;
+            const currentAbsoluteX = currentOriginalDotX + this.x;
             const snappedAbsoluteX = Math.round(currentAbsoluteX / 60) * 60;
             
             // Clamp snapped position within safe bounds
             const clampedSnappedAbsoluteX = Math.max(minAbsX, Math.min(maxAbsX, snappedAbsoluteX));
-            const snappedX = clampedSnappedAbsoluteX - baseLeft;
+            const snappedX = clampedSnappedAbsoluteX - currentOriginalDotX;
             
             // Retrieve associated dot, line, and label
             let dot = null;
@@ -6357,14 +6369,14 @@
             const innerTimeline = document.getElementById('innerTimeline');
             const dots = innerTimeline.querySelectorAll('.timeline-connector-dot');
             dots.forEach(d => {
-              if (Math.abs(parseFloat(d.style.left) - baseLeft) < 2) {
+              if (Math.abs(parseFloat(d.style.left) - currentOriginalDotX) < 2) {
                 dot = d;
               }
             });
             
             const lines = innerTimeline.querySelectorAll('.timeline-connector-line');
             lines.forEach(l => {
-              if (Math.abs(parseFloat(l.style.left) - baseLeft) < 2) {
+              if (Math.abs(parseFloat(l.style.left) - currentOriginalDotX) < 2) {
                 line = l;
               }
             });
@@ -6381,7 +6393,7 @@
               
               const otherBaseLeft = parseFloat(other.style.left) || 0;
               const otherX = gsap.getProperty(other, "x") || 0;
-              const otherAbsX = otherBaseLeft + otherX;
+              const otherAbsX = otherBaseLeft + 105 + otherX;
               const otherIsAbove = other.classList.contains('above');
               
               if (targetIsAbove === otherIsAbove) {
@@ -6420,7 +6432,7 @@
               if (line) gsap.to(line, { x: prevX, duration: 0.4, ease: "back.out(1.2)" });
               if (label) {
                 gsap.to(label, { x: prevX, duration: 0.4, ease: "back.out(1.2)" });
-                label.textContent = window.getSpineLabelTextForCard(cardType, baseLeft + prevX);
+                label.textContent = window.getSpineLabelTextForCard(cardType, currentOriginalDotX + prevX);
               }
             } else {
               // Snap all connected elements smoothly
@@ -8978,8 +8990,9 @@
         let lastCard = null;
         cardsForDay.forEach(card => {
           const leftVal = parseInt(card.style.left) || 0;
-          if (leftVal > maxLeft) {
-            maxLeft = leftVal;
+          const centerVal = leftVal + 105;
+          if (centerVal > maxLeft) {
+            maxLeft = centerVal;
             lastCard = card;
           }
         });
@@ -9015,7 +9028,7 @@
       card.id = `card-node-${cardId}`;
       card.setAttribute('data-id', cardId);
       card.setAttribute('data-type', 'activity');
-      card.style.left = `${newLeft}px`;
+      card.style.left = `${newLeft - 105}px`;
       if (isAbove) {
         card.style.bottom = "calc(45% + 40px)";
       } else {
@@ -9570,23 +9583,18 @@
       
       const isAboveSpine = card.classList.contains('above');
       
-      const cardIdToX = {
-        'd1-c1': 120, 'd1-c2': 420,
-        'd2-c1': 720, 'd2-c2': 1020,
-        'd3-c1': 1320, 'd3-c2': 1620,
-        'd4-c1': 1920, 'd4-c2': 2120
-      };
-      const cardX = cardIdToX[cardId];
+      const baseLeft = parseFloat(card.style.left) || 0;
+      const cardX = baseLeft + 105;
       
       // Find dot and line
-      const dot = document.querySelector(`.timeline-connector-dot[style*="left: ${cardX}px"]`);
-      const line = document.querySelector(`.timeline-connector-line[style*="left: ${cardX}px"]`);
+      const dot = window.getCardConnectorDot(card);
+      const line = window.getCardConnectorLine(card);
       
       const cardName = card.querySelector('.card-node-name').textContent;
       const priceText = card.querySelector('.price-pill').textContent;
       const priceVal = priceText.toLowerCase() === 'free' ? 0 : parseInt(priceText.replace(/[^\d]/g, '')) || 0;
       
-      const dayNum = parseInt(cardId.match(/d(\d+)-c/)[1]);
+      const dayNum = window.getCardDayNum(card);
       
       // Save removed card data
       const cardData = {
